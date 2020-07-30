@@ -80,7 +80,7 @@ namespace catinapoke.arkanoid
             SpawnBall();
         }
 
-        private void ClearLevel()
+        private void ClearLevel(bool saveBall)
         {
             foreach (GameObject item in brickSet.Items.ToArray())
             {
@@ -91,33 +91,46 @@ namespace catinapoke.arkanoid
                 Destroy(item);
             }
 
-            GameObject[] balls = ballSet.Items.ToArray();
-            GameObject firstBall = balls[0];
-            for (int i = 1; i < balls.Length; i++)
+            if(saveBall)
             {
-                Destroy(balls[i]);
+                GameObject[] balls = ballSet.Items.ToArray();
+                GameObject firstBall = balls[0];
+                for (int i = 1; i < balls.Length; i++)
+                {
+                    Destroy(balls[i]);
+                }
+                firstBall.GetComponent<BallMover>().Reset();
             }
-            firstBall.GetComponent<BallMover>().Reset();
+            else
+            {
+                foreach (GameObject item in ballSet.Items.ToArray())
+                {
+                    Destroy(item);
+                }
+            }
+
             Destroy(runtimePlatform.Item);
         }
 
-        public void ResetLevel()
+        public void ResetLevel(bool saveBall)
         {
-            ClearLevel();
+            ClearLevel(saveBall);
             SpawnBricks(levelNumber);
             SpawnPlatform();
+            if(!saveBall)
+                SpawnBall();
         }
 
         public void SpawnNextLevel()
         {
             levelNumber = Mathf.Clamp(levelNumber + 1, 0, levelBricks.Length - 1);
-            ResetLevel();
+            ResetLevel(true);
         }
 
         public void ResetMatch()
         {
             levelNumber = 0;
-            ResetLevel();
+            ResetLevel(false);
         }
 
         private void SpawnWalls()
