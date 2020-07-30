@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSize: {x: 9, y: 10}
-  levelNumber: 2
+  levelNumber: 0
   platform: {fileID: 5895677226045946288, guid: 0f5a49e7e695e504fa04ccbe0f2b54d9,
     type: 3}
   ball: {fileID: 1741450605537049685, guid: 9f577812e0da75c48b0a2e3dd49c7008, type: 3}

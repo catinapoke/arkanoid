@@ -92,11 +92,12 @@ namespace catinapoke.arkanoid
             }
 
             GameObject[] balls = ballSet.Items.ToArray();
+            GameObject firstBall = balls[0];
             for (int i = 1; i < balls.Length; i++)
             {
                 Destroy(balls[i]);
             }
-            balls[0].GetComponent<BallMover>().Reset();
+            firstBall.GetComponent<BallMover>().Reset();
             Destroy(runtimePlatform.Item);
         }
 
