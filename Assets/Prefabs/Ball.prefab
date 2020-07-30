@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1741450605537049681}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,5 +112,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  minSpeed: 1
+  maxSpeed: 10
   moveDirection: {x: 0, y: -1}
-  bouncableList: {fileID: 11400000, guid: e575d3bca0d72af49af5bc4c86658226, type: 2}
+  ballSet: {fileID: 11400000, guid: 25672bb4e9dd0fa4d8ee65791a992117, type: 2}
+  runtimePlayerPad: {fileID: 11400000, guid: 6951a17cd69e0cb449ea33d4fd9399f8, type: 2}
+  brickSet: {fileID: 11400000, guid: e575d3bca0d72af49af5bc4c86658226, type: 2}
+  wallSet: {fileID: 11400000, guid: 74f037f6458b4ee479dcaa601a007ee5, type: 2}
+  BallDestroy: {fileID: 11400000, guid: b350ea82138e76449868a5ff74ce12af, type: 2}

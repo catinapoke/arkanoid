@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2565744938153695627}
   - component: {fileID: 2565744938153695626}
   - component: {fileID: 2565744938153695733}
-  - component: {fileID: 6388988369275740823}
+  - component: {fileID: 1982068342367852206}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Bouncable
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6388988369275740823
+--- !u!114 &1982068342367852206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2565744938153695732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb0d2a23f31b6174faf3a7acdffe29d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1de252b63801e264799f0b18a56d3503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  list: {fileID: 11400000, guid: e575d3bca0d72af49af5bc4c86658226, type: 2}
+  Set: {fileID: 11400000, guid: 74f037f6458b4ee479dcaa601a007ee5, type: 2}

@@ -1,23 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace catinapoke.arkanoid
 {
     public class PlatformMover : MonoBehaviour
     {
+        [Header("Move parameters")]
         [SerializeField]
         private Vector2 horizontalBounds;  // X - left corner, Y - right corner
         private Vector2 movingBounds;      // Borders according to platform size
+
+        [SerializeField]
+        private float maxWidthPercent;     // Max width relatively to bounds
+
         private BoxCollider2D boxCollider;
+
         [SerializeField]
         private float speed;
 
+        [Header("Runtime objects")]
+        [SerializeField]
+        private GameObjectSet bonusSet;
+
+        [SerializeField]
+        private RuntimeGameObject runtimeObject;
+
         private void Start()
         {
-            Camera camera = Camera.main;
+            runtimeObject.Set(gameObject);
             boxCollider = gameObject.GetComponent<BoxCollider2D>();
-            CalculateMovingBounds();
+            CalculateMovingBounds(boxCollider.bounds.extents.x);
         }
 
         public void SetHorizontalBounds(Vector2 bounds)
@@ -25,9 +36,22 @@ namespace catinapoke.arkanoid
             horizontalBounds = bounds;
         }
 
-        private void CalculateMovingBounds()
+        public void MultiplyScale(float coefficient)
         {
-            movingBounds = new Vector2(horizontalBounds.x + boxCollider.bounds.extents.x, horizontalBounds.y - boxCollider.bounds.extents.x);
+            float predictedValue = gameObject.transform.localScale.x * coefficient;
+            predictedValue = Mathf.Min(predictedValue, maxWidthPercent * (horizontalBounds.y - horizontalBounds.x));
+            gameObject.transform.localScale = new Vector3(
+                predictedValue,
+                gameObject.transform.localScale.y,
+                gameObject.transform.localScale.z
+                );
+            // As BoxCollider updates too late, so I use scale for size because they're equal
+            CalculateMovingBounds(gameObject.transform.localScale.x / 2);
+        }
+
+        private void CalculateMovingBounds(float halfSize)
+        {
+            movingBounds = new Vector2(horizontalBounds.x + halfSize, horizontalBounds.y - halfSize);
         }
 
         private void FixedUpdate()
@@ -38,6 +62,20 @@ namespace catinapoke.arkanoid
                 gameObject.transform.position.y,
                 gameObject.transform.position.z
                 );
+
+            foreach (GameObject bonus in bonusSet.Items)
+            {
+                BoxCollider2D bonusCollider = bonus.GetComponent<BoxCollider2D>();
+                if (GamePhysics.CheckCollision(boxCollider, bonusCollider))
+                {
+                    bonus.GetComponent<TouchableObject>().Hit(this.gameObject);
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            runtimeObject.Remove(gameObject);
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace catinapoke.arkanoid
@@ -29,8 +25,9 @@ namespace catinapoke.arkanoid
         }
     }
 
-    static class GamePhysics
+    static public class GamePhysics
     {
+        // Get closest direction of target vector (Up, Right, Down, Left)
         static public Direction VectorDirection(Vector2 target)
         {
             Vector2[] compass = {
@@ -54,20 +51,21 @@ namespace catinapoke.arkanoid
             return (Direction)best_match;
         }
 
-        static public bool CheckCollision(BoxCollider2D one, BoxCollider2D two) // Box - Box collision
+        // Box - Box collision
+        static public bool CheckCollision(BoxCollider2D one, BoxCollider2D two)
         {
             Vector3 onePosition = one.gameObject.transform.position;
-            Vector3 oneExtents  = one.bounds.extents;
-            
+            Vector3 oneExtents = one.bounds.extents;
+
             Vector3 twoPosition = two.gameObject.transform.position;
-            Vector3 twoExtents  = two.bounds.extents;
+            Vector3 twoExtents = two.bounds.extents;
 
             bool collisionX = onePosition.x + oneExtents.x >= twoPosition.x - twoExtents.x &&
                               twoPosition.x + twoExtents.x >= onePosition.x - oneExtents.x;
 
             bool collisionY = onePosition.y + oneExtents.y >= twoPosition.y - twoExtents.y &&
                               twoPosition.y + twoExtents.y >= onePosition.y - oneExtents.y;
-            
+
             return collisionX && collisionY;
         }
 
@@ -101,7 +99,7 @@ namespace catinapoke.arkanoid
                 return new Collision(false, Direction.Up, Vector2.zero);
         }
 
-        // Collision resolution
+        // Discrete collision resolution
         static public void ResolveCollision(Collision collision, CircleCollider2D ballCollider)
         {
             Direction dir = collision.direction;
