@@ -1,2 +1,9 @@
-# arkanoid
-A test task for [MYTONA](https://mytona.ru/)
+# Arkanoid
+Тестовое задание для [MYTONA](https://mytona.ru/)
+
+Краткие комментарии по проделанной работе:
+
+1. Задание получено "27 июл. 2020 г. в 13:57", время выполнения 3 дня → выполнить до 30 июля 13:57
+2. Условием было "Не использовать RigidBody/RigidBody2D (включая методы из Physics и Physics2D)". Т.е. Collider2D не входит в условие и использовался только как структура для хранения размеров Axis-aligned bounding box.
+3. Была реализована Discrete collision detection, которая располагается в GamePhysics.cs 
+4. Уровень генерируется с помощью LevelGenerator
