@@ -45,10 +45,15 @@ namespace catinapoke.arkanoid
                                     Quaternion.identity
                                     );
                     }
-                    Destroy(this.gameObject, 0);
-                    BrickDestroy.Raise();
+                    Destroy(this.gameObject);
                 }
             }
+        }
+
+        protected override void OnDestroy()
+        {
+            Set.Remove(gameObject);
+            BrickDestroy.Raise();
         }
     }
 }

@@ -55,7 +55,6 @@ namespace catinapoke.arkanoid
         private float platformLevel;
 
         [Space]
-
         [Header("Runtime objects")]
         [SerializeField]
         private GameObjectSet wallSet;
@@ -77,23 +76,27 @@ namespace catinapoke.arkanoid
             levelNumber = Mathf.Clamp(levelNumber, 0, levelBricks.Length);
             SpawnWalls();
             SpawnBricks(levelNumber);
-            SpawnActive();
+            SpawnPlatform();
+            SpawnBall();
         }
 
         private void ClearLevel()
         {
-            foreach (GameObject item in brickSet.Items)
+            foreach (GameObject item in brickSet.Items.ToArray())
             {
                 Destroy(item);
             }
-            foreach (GameObject item in bonusSet.Items)
+            foreach (GameObject item in bonusSet.Items.ToArray())
             {
                 Destroy(item);
             }
-            foreach (GameObject item in ballSet.Items)
+
+            GameObject[] balls = ballSet.Items.ToArray();
+            for (int i = 1; i < balls.Length; i++)
             {
-                Destroy(item);
+                Destroy(balls[i]);
             }
+            balls[0].GetComponent<BallMover>().Reset();
             Destroy(runtimePlatform.Item);
         }
 
@@ -101,12 +104,12 @@ namespace catinapoke.arkanoid
         {
             ClearLevel();
             SpawnBricks(levelNumber);
-            SpawnActive();
+            SpawnPlatform();
         }
 
         public void SpawnNextLevel()
         {
-            levelNumber = Mathf.Clamp(++levelNumber, 0, levelBricks.Length);
+            levelNumber = Mathf.Clamp(levelNumber + 1, 0, levelBricks.Length - 1);
             ResetLevel();
         }
 
@@ -156,13 +159,14 @@ namespace catinapoke.arkanoid
             }
         }
 
-        private void SpawnActive()
+        private void SpawnPlatform()
         {
-            // Platform
             GameObject platformObject = Instantiate(platform, new Vector3(0, levelSize.y * (platformLevel - 0.5f), 0), Quaternion.identity);
             platform.GetComponent<PlatformMover>().SetHorizontalBounds(new Vector2(-levelSize.x / 2, levelSize.x / 2));
+        }
 
-            // Ball
+        private void SpawnBall()
+        {
             GameObject ballObject = Instantiate(ball, new Vector3(0, 0, 0), Quaternion.identity);
         }
     }

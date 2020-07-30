@@ -6,7 +6,6 @@ namespace catinapoke.arkanoid
     public class BallMover : MonoBehaviour
     {
         [Header("Move parameters")]
-
         [SerializeField]
         private float speed;
 
@@ -22,9 +21,7 @@ namespace catinapoke.arkanoid
         private CircleCollider2D ballCollider;
 
         [Space]
-
         [Header("Runtime objects")]
-
         [SerializeField]
         private GameObjectSet brickSet;
 
@@ -38,9 +35,7 @@ namespace catinapoke.arkanoid
         private RuntimeGameObject runtimePlayerPad;
 
         [Space]
-
         [Header("Events")]
-
         [SerializeField]
         private GameEvent BallDestroy;
 
@@ -57,14 +52,20 @@ namespace catinapoke.arkanoid
             }
         }
 
+        public void Reset()
+        {
+            gameObject.transform.position = Vector2.zero;
+            moveDirection = new Vector2(UnityEngine.Random.Range(-1, 1), 1).normalized;
+        }
+
         private void FixedUpdate()
         {
             gameObject.transform.Translate(speed * moveDirection * Time.fixedDeltaTime);
 
             Collision collision;
 
-            BounceFromBoxes(brickSet.Items, false);
-            BounceFromBoxes(wallSet.Items, true);
+            BounceFromBoxes(brickSet.Items);
+            BounceFromBoxes(wallSet.Items);
 
             // Platform collision
             BoxCollider2D playerPadCollider = runtimePlayerPad.Item.GetComponent<BoxCollider2D>();
@@ -89,7 +90,7 @@ namespace catinapoke.arkanoid
         }
 
         // Handle ball bounce from static boxes
-        private void BounceFromBoxes(List<GameObject> gameObjects, bool checkDeathZone)
+        private void BounceFromBoxes(List<GameObject> gameObjects)
         {
             Collision collision;
             foreach (GameObject boxObject in gameObjects)
@@ -99,12 +100,6 @@ namespace catinapoke.arkanoid
                 collision = GamePhysics.CheckCollision(ballCollider, boxCollider);
                 if (collision.occurred)
                 {
-                    if (checkDeathZone && boxObject.CompareTag("DeathZone"))
-                    {
-                        Destroy(this.gameObject);
-                        return;
-                    }
-
                     GamePhysics.ResolveCollision(collision, ballCollider);
 
                     // Reflect direction
@@ -129,7 +124,7 @@ namespace catinapoke.arkanoid
             this.speed = otherBall.speed;
         }
 
-        protected virtual void OnDisable()
+        protected virtual void OnDestroy()
         {
             ballSet.Remove(gameObject);
             BallDestroy.Raise();
